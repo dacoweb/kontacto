@@ -27,7 +27,22 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  pg4:
+    container_name: kontacto_pg
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: daco@dacoweb.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    ports:
+      - 5050:80
+    restart: unless-stopped
+    volumes:
+      - pg4_data:/var/lib/pgadmin
+    depends_on:
+      - db
+
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+  pg4_data:

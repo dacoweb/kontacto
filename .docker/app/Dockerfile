@@ -1,8 +1,16 @@
 # Fijamos la imágen más estable del momento
 FROM python:3.13.13-alpine3.23
 
+# Dependencias de sistema necesarias para PostgreSQL y compilación
+RUN apk add --no-cache \
+    libpq-dev \
+    gcc \
+    musl-dev \
+    postgresql-dev
+
 # Nos aseguramos de actualizar pip
-RUN pip install --upgrade pip 
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir "psycopg[binary]"
 
 # Crear usuario del contenedor
 RUN addgroup -g 1000 appuser && \
@@ -30,9 +38,3 @@ EXPOSE 8000
 
 # # Ejecutando servidor django
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-# cd  ./.docker/app/
-# docker build -t dkdaco .
-# docker run -it dkdaco sh
-# docker rmi -f dkdaco
-# python -m django  startproject app .
