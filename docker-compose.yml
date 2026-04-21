@@ -1,0 +1,33 @@
+
+services:
+  app:
+    container_name: kontacto_app
+    image: kontacto/app:1.0
+    build: ./.docker/app/
+    env_file: ./.env
+    ports:
+      - 8088:8000
+    volumes:
+      - static_volume:/home/appuser/staticfiles/
+      - media_volume:/home/appuser/mediafiles/
+      - ./src/:/home/appuser/app/
+    depends_on:
+      - db
+
+  db:
+    container_name: kontacto_db
+    image: kontacto/db:1.0
+    build: ./.docker/postgres
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 9432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
