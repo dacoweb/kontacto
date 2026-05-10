@@ -1,1 +1,8 @@
+# Ignoramos los archivos compilados de Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Excluimos las variables de ambiente
 .env
