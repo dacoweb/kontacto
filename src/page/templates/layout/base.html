@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Site{% endblock %}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-300 ">
+    <nav>
+        
+    </nav>
+
+    <div class="content">
+        {% block content %}
+        
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Taller Kontacto</p>
+    </footer>
+
+    {% block extrajs %}{% endblock %}
+</body>
+</html>
