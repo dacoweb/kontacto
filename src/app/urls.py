@@ -19,6 +19,6 @@ from page import views
 
 urlpatterns = [
     path('', views.page_home, name='app-home'),
-    path('list', views.list, name='contact-list'),
-    path('store', views.store, name='contact-store'),
+    path('list', views.list_contacts, name='contact-list'),
+    path('store', views.store_contact, name='contact-store'),
 ]

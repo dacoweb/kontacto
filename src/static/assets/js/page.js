@@ -24,7 +24,7 @@
                 renderMessages(data);
             })
             .catch(function (err) {
-                console.error('Error GET:', err);
+                console.log('Error GET:', err);
             });
     }
 
@@ -57,7 +57,7 @@
             body: JSON.stringify(payload)
         })
             .then(function (res) {
-                if (!res.ok) {
+                if (!res.stored) {
                     throw new Error('Error en POST');
                 }
                 return res;
@@ -67,7 +67,7 @@
                 loadContacts();
             })
             .catch(function (err) {
-                console.error('Error POST:', err);
+                console.log('Error POST:', err);
             });
     }
 

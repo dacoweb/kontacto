@@ -38,15 +38,18 @@
             </button>
         </form>
 
-        <ul id="messageList"></ul>
+        <hr >
+
+        <ul id="messageList" class="max-w-md space-y-2 text-body list-decimal list-inside mt-3"></ul>
+
     </div>
 </div>
 {% endblock %}
 
 {% block extrajs %}
     <script>
-        var LIST_URL = "{% url 'contact-list' %}";
-        var STORE_URL = "{% url 'contact-store' %}";
+        const LIST_URL = "{% url 'contact-list' %}";
+        const STORE_URL = "{% url 'contact-store' %}";
     </script>
-    <script src="{% static '/assets/js/page.js' %}" type="application/javascript"></script>  
+    <script src="{% static 'assets/js/page.js' %}" type="application/javascript"></script>  
 {% endblock %}

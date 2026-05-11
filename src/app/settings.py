@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-exx&h=u^kkolbt=rc&ogl-cyz+##&cwih4_in*mpu^o68nmxos
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost', '127.0.0.1'
+]
 
 
 # Application definition
@@ -116,17 +118,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(os.environ.get('APP_PATH'), 'staticfiles')
+STATIC_ROOT = os.path.join(os.environ.get('APP_PATH'), '../', 'staticfiles')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.environ.get('APP_PATH'), 'mediafiles')
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+MEDIA_ROOT = os.path.join(os.environ.get('APP_PATH'), '../', 'mediafiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+# Para generar recursos con hash en producción
+# STORAGES = {
+#     "staticfiles": {
+#         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+#     },
+# }

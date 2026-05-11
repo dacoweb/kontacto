@@ -13,17 +13,19 @@ def page_home(request):
     return render(request, 'page/home.html')
 
 
-@csrf_exempt
 @require_http_methods(["GET"])
-def list(request):
-    data = [] # list([]) # Contact.objects.get()
+def list_contacts(request):
+    data = list(Contact.objects.all().values('id', 'name', 'email', 'subject', 'message'))
     return JsonResponse(data, safe=False)
 
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def store(request):
+def store_contact(request):
     body = json.loads(request.body)
-    # Contact.objects.create(**body)
-    return JsonResponse({'ok': True})
-    # return JsonResponse({'ok': True})
+    try:
+        Contact.objects.create(**body)
+        return JsonResponse({'stored': True})
+    except IntegrityError:
+        print("Fallo, registrar log de ser necesario.")
+    return JsonResponse({'stored': False})
