@@ -8,6 +8,8 @@ services:
     env_file: ./.env
     ports:
       - "8088:8000"
+      - "5678:5678"
+    command: python -m debugpy --listen 0.0.0.0:5678 --wait-for-client manage.py runserver 0.0.0.0:8000 --nothreading --noreload
     volumes:
       - static_volume:/home/appuser/staticfiles/
       - media_volume:/home/appuser/mediafiles/

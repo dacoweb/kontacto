@@ -1,6 +1,10 @@
 # Fijamos la imágen más estable del momento
 FROM python:3.13.13-alpine3.23
 
+# Evitemos los pyc por ahora y bufer de salidas estándar
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 # Dependencias de sistema necesarias para PostgreSQL y compilación
 RUN apk add --no-cache \
     libpq-dev \

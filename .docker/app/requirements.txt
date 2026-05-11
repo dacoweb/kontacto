@@ -1,4 +1,7 @@
 asgiref==3.11.1
+debugpy==1.8.20
 Django==6.0.4
+psycopg==3.3.4
+psycopg-binary==3.3.4
 psycopg2-binary==2.9.12
 sqlparse==0.5.5
