@@ -12,6 +12,7 @@ services:
       - static_volume:/home/appuser/staticfiles/
       - media_volume:/home/appuser/mediafiles/
       - ./src/:/home/appuser/app/
+    restart: unless-stopped
     depends_on:
       - db
 
@@ -26,6 +27,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql
+    restart: unless-stopped
 
   pg4:
     container_name: kontacto_pg
@@ -35,9 +37,9 @@ services:
       PGADMIN_DEFAULT_PASSWORD: secret
     ports:
       - "5050:80"
-    restart: unless-stopped
     volumes:
       - pg4_data:/var/lib/pgadmin
+    restart: unless-stopped
     depends_on:
       - db
 
