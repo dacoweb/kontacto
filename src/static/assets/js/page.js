@@ -13,11 +13,11 @@
     const errorClasses = ['text-red-800', 'bg-red-100'];
 
     var form = null;
-    var list = null;
+    var tbBodyMessages = null;
 
     function init() {
         form = document.getElementById('contactForm');
-        list = document.getElementById('messageList');
+        tbBodyMessages = document.querySelector('#tbBodyMessages');
 
         loadContacts();
 
@@ -41,12 +41,26 @@
     }
 
     function renderMessages(messages) {
-        list.innerHTML = '';
+        tbBodyMessages.innerHTML = '';
 
         messages.forEach(function (msg) {
-            var li = document.createElement('li');
-            li.textContent = msg.name + ' - ' + msg.subject;
-            list.appendChild(li);
+            const nuevaFila = tbBodyMessages.insertRow();
+            const celda1 = nuevaFila.insertCell(0);
+            const celda2 = nuevaFila.insertCell(1);
+            celda1.textContent = msg.name + ' - ' + msg.subject;
+
+            const btnEditar = document.createElement("button");
+            btnEditar.textContent = "Edit";
+            btnEditar.className = "btn-edit bg-blue-600 text-white font-semibold py-2 px-4 me-2";
+            btnEditar.dataset.messageId = msg.id; 
+
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "Del";
+            btnEliminar.className = "btn-delete bg-red-600 text-white font-semibold py-2 px-4 me-2";
+            btnEliminar.dataset.messageId = msg.id; 
+
+            celda2.append(btnEditar, btnEliminar);
+            celda2.className = "text-center";
         });
     }
 
@@ -57,7 +71,8 @@
             name: formData.get('name'),
             email: formData.get('email'),
             subject: formData.get('subject'),
-            message: formData.get('message')
+            message: formData.get('message'),
+            messageContactId: formData.get('messageContactId')
         };
 
         fetch(STORE_URL, {
@@ -68,19 +83,72 @@
             },
             body: JSON.stringify(payload)
         })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.stored) {
-                    showAlert('Error', data.errors);
-                    throw new Error('Error en POST');
-                }
-                showAlert('Success', 'Registro guardado!');
-                form.reset();
-                loadContacts();
+        .then(response => response.json())
+        .then(data => {
+            if (!data.stored) {
+                showAlert('Error', data.errors);
+                throw new Error('Error en POST');
+            }
+            showAlert('Success', 'Registro guardado!');
+            form.reset();
+            loadContacts();
+        })
+        .catch(function (err) {
+            console.log('Error POST:', err);
+        });
+    }
+
+    function loadContactToEdit(contactId) {
+        fetch(EDIT_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                'id': contactId
             })
-            .catch(function (err) {
-                console.log('Error POST:', err);
-            });
+        })
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (data) {
+            if (data.id != undefined && data.id > 0) {
+                document.querySelector('input[name="messageContactId"]').value = data.id;
+                document.querySelector('input[name="name"]').value = data.name;
+                document.querySelector('input[name="email"]').value = data.email;
+                document.querySelector('input[name="subject"]').value = data.subject;
+                document.querySelector('textarea[name="message"]').value = data.message;
+            }
+        })
+        .catch(function (err) {
+            console.log('Error GET:', err);
+        });
+    }
+
+    function loadContactToDelete(contactId) {
+
+        fetch(DELETE_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify({
+                'id': contactId
+            })
+        })
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (data) {
+            if (data.deleted != undefined && data.deleted) {
+                loadContacts();
+            }
+        })
+        .catch(function (err) {
+            console.log('Error Delete:', err);
+        });
     }
 
     function getCSRFToken() {
@@ -160,6 +228,21 @@
 
     alertElBtnClose.addEventListener('click', () => {
         closeAlert();
+    });
+
+    document.addEventListener('click', function(event) {
+        const element = event.target.closest('.btn-edit');
+        if (element) {
+            loadContactToEdit(element.dataset.messageId);
+            document.getElementById('tab-register').click();
+        }
+    });
+
+    document.addEventListener('click', function(event) {
+        const element = event.target.closest('.btn-delete');
+        if (element) {
+            loadContactToDelete(element.dataset.messageId);
+        }
     });
 
     window.addEventListener('load', init);

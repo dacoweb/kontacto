@@ -60,6 +60,7 @@
                     <textarea name="message" rows="4" placeholder="Escribe tu mensaje..."
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-black focus:ring-1 focus:ring-black outline-none transition resize-none"></textarea>
                 </div>
+                <input type="hidden" name="messageContactId" value="">
 
                 <button type="submit" class="w-full bg-black text-white py-2.5 rounded-lg hover:bg-gray-800 transition">
                     Enviar mensaje
@@ -67,8 +68,16 @@
                 </form>
             </div>
             <div id="content-list" class="tab-content hidden">
-                <div class="space-y-3">
-                    <ul id="messageList" class="max-w-md space-y-2 text-body list-decimal list-inside mt-3"></ul>
+                <div class="max-h-[500px] overflow-y-auto">
+                    <table class="min-w-full divide-y divide-gray-200 shadow-sm border border-gray-200 rounded-lg">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th width="75%" scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto / Mensaje</th>
+                                <th width="25%" scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"> Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbBodyMessages" class="bg-white divide-y divide-gray-200"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -81,6 +90,9 @@
 <script>
     const LIST_URL = "{% url 'contact-list' %}";
     const STORE_URL = "{% url 'contact-store' %}";
+    const EDIT_URL = "{% url 'contact-edit' %}";
+    const DELETE_URL = "{% url 'contact-delete' %}";
+    
 </script>
 <script src="{% static 'assets/js/page.js' %}" type="application/javascript"></script>
 {% endblock %}

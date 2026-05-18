@@ -20,5 +20,7 @@ from page import views
 urlpatterns = [
     path('', views.page_home, name='app-home'),
     path('list', views.list_contacts, name='contact-list'),
+    path('edit', views.edit_contact, name='contact-edit'),
+    path('delete', views.delete_contact, name='contact-delete'),
     path('store', views.store_contact, name='contact-store'),
 ]
